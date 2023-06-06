@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#check if $PYFILE environment variable is set
+if [[ -z "$PYFILE" ]]; then
+	echo "Error: environment variable $PYFILE is not set"
+	exit 1
+fi
+
+#check if the specified python file exists
+if [[ ! -f "$PYFILE" ]]; then
+	echo "Error: python file $PYFILE does not exist"
+	exit 1
+fi
+
+#Generate the output filename
+OUTPUT_FILENAME = "${PYFILE%.py}.pyc"
+
+#compile the python file
+python -m py_compile "$PYFILE" -o "$OUTPUT_FILENAME"
+
+#check if the compilation was successful
+if [[ $? -eq 0 ]]; then
+	echo "compilation successful. output file:$OUTPUT_FILENAME"
+else
+	echo "compilation failed"
+	exit 1
+fi
